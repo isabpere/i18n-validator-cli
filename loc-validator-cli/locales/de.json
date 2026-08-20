@@ -1,0 +1,30 @@
+{
+	"app": {
+		"name": "Lokalisierungspr\u00fcfer",
+		"tagline": "Finde \u00dcbersetzungsfehler vor der Bereitstellung"
+	},
+	"navigation": {
+		"home": "Startseite",
+		"settings": "Einstellungen",
+		"help": "Hilfe"
+	},
+	"messages": {
+		"welcome": "Willkommen, {name}!",
+		"filesScanned": "{count} \u00dcbersetzungsdateien wurden gepr\u00fcft.",
+		"noResults": "Keine Probleme gefunden.",
+		"validationFailed": "Die Validierung ist fehlgeschlagen. Einzelheiten findest du im Bericht.",
+		"openReport": "\u00d6ffne den Bericht unter {link}."
+	},
+	"errors": {
+		"fileNotFound": "Die Datei wurde nicht gefunden.",
+		"invalidSyntax": "Die \u00dcbersetzungsdatei enth\u00e4lt ung\u00fcltige JSON- oder YAML-Syntax.",
+		"missingKey": "Der \u00dcbersetzungsschl\u00fcssel {key} fehlt.",
+		"invalidPlaceholder": "Der Platzhalter {placeholder} ist ung\u00fcltig."
+	},
+	"actions": {
+		"scan": "Repository pr\u00fcfen",
+		"fix": "Probleme beheben",
+		"cancel": "Abbrechen"
+	},
+	"encodingWarning": "Benutzername: MÃ¼ller; Status: cafÃ©"
+}

@@ -1,0 +1,29 @@
+{
+	"app": {
+		"name": "Localization Validator",
+		"tagline": "Find translation issues before deployment"
+	},
+	"navigation": {
+		"home": "Home",
+		"settings": "Settings",
+		"help": "Help"
+	},
+	"messages": {
+		"welcome": "Welcome, {name}!",
+		"filesScanned": "Scanned {count} translation files.",
+		"noResults": "No issues found.",
+		"validationFailed": "Validation failed. Check the report for details.",
+		"openReport": "Open the report at {url}."
+	},
+	"errors": {
+		"fileNotFound": "The file {path} could not be found.",
+		"invalidSyntax": "The translation file contains invalid JSON or YAML syntax.",
+		"missingKey": "The translation key {key} is missing.",
+		"invalidPlaceholder": "The placeholder {placeholder} is invalid."
+	},
+	"actions": {
+		"scan": "Scan repository",
+		"fix": "Fix issues",
+		"cancel": "Cancel"
+	}
+}

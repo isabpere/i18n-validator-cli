@@ -1,0 +1,29 @@
+{
+	"app": {
+		"name": "Validador de localizaci\u00f3n",
+		"tagline": "Encuentra problemas de traducci\u00f3n antes del despliegue"
+	},
+	"navigation": {
+		"home": "Inicio",
+		"settings": "Configuraci\u00f3n",
+		"help": "Ayuda"
+	},
+	"messages": {
+		"welcome": "\u00a1Bienvenido, {username}!",
+		"filesScanned": "Se analizaron {count} archivos de traducci\u00f3n.",
+		"noResults": "No se encontraron problemas.",
+		"validationFailed": "La validaci\u00f3n fall\u00f3. Consulta el informe para obtener m\u00e1s detalles.",
+		"openReport": "Abre el informe en {url}."
+	},
+	"errors": {
+		"fileNotFound": "No se encontr\u00f3 el archivo {path}.",
+		"invalidSyntax": "El archivo de traducci\u00f3n contiene una sintaxis JSON o YAML no v\u00e1lida.",
+		"missingKey": "Falta la clave de traducci\u00f3n {key}."
+	},
+	"actions": {
+		"scan": "Analizar repositorio",
+		"fix": "Corregir problemas",
+		"cancel": "Cancelar",
+		"retry": "Reintentar"
+	}
+}
