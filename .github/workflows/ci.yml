@@ -33,6 +33,12 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
-      - name: Run i18n validator CLI on locales
+      - name: Run i18n validator CLI on all target locales
         run: |
-          loc-validator check locales/en.json locales/es.json
+          set -e
+          for file in locales/*.json; do
+            if [ "$file" != "locales/en.json" ]; then
+              echo "Validating $file against locales/en.json..."
+              loc-validator check locales/en.json "$file"
+            fi
+          done
