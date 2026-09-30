@@ -6,18 +6,46 @@ build-backend = "setuptools.build_meta"
 name = "loc-validator-cli"
 version = "0.1.0"
 description = "Validate JSON and YAML localization files before deployment"
+readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["click>=8.1", "PyYAML>=6.0"]
+license = { text = "MIT" }
+authors = [
+    { name = "Isabel Pérez Céspedes", email = "isabelpcespedes@gmail.com" }
+]
+keywords = ["i18n", "linter", "localization", "cli", "validation", "mojibake"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Internationalization",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "click>=8.1",
+    "PyYAML>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tu-usuario/loc-validator-cli"
+Repository = "https://github.com/tu-usuario/loc-validator-cli.git"
+Issues = "https://github.com/tu-usuario/loc-validator-cli/issues"
 
 [project.scripts]
 loc-validator = "src.cli:main"
-
-[tool.setuptools]
-packages = ["src"]
+loc-check = "src.cli:main"  # Alias rápido por si usas este comando en el README/CI
 
 [project.optional-dependencies]
 test = ["pytest>=8.0"]
 lint = ["ruff>=0.6"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
