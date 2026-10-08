@@ -1,21 +1,23 @@
-# Loc Validator CLI
+# i18n-validator-cli
+A Python command-line interface to validate and check JSON and YAML localization files before deployment. It compares a base language file against a target language file to detect common internationalization (i18n) issues that could break user interfaces or cause corrupt text in production.
 
-CLI en Python para revisar archivos de traducción JSON y YAML antes de desplegar código. Compara un idioma base con un idioma destino y detecta errores habituales de i18n que pueden romper la interfaz o dejar textos corruptos en producción.
+## Problem It Solves
 
-## Problema que resuelve
+Translation files often evolve independently from application code. Keys can go missing, placeholders can be incorrectly translated or deleted, and encoding issues can corrupt characters (mojibake). This tool identifies these issues early in the local development or CI pipelines.
 
-Las traducciones suelen evolucionar separadas del código. Una clave puede desaparecer, una variable puede traducirse o eliminarse, y un archivo puede contener texto afectado por una decodificación UTF-8 incorrecta. Esta herramienta convierte esos problemas en errores visibles durante el desarrollo o en CI.
+It detects:
+- **Missing Keys:** Keys defined in the base language file but absent in the target language file.
+- **Extra / Orphan Keys:** Keys present in the target language file but missing in the base language file.
+- **Placeholder Mismatches:** Translation placeholders that were modified, translated, or removed (e.g., `{user}` changed to `{usuario}`).
+- **Mojibake:** Common broken characters caused by incorrect UTF-8 decoding (e.g., `MÃ¼ller`).
 
-Detecta:
+Additionally, it provides a pseudo-localization tool to help identify UI layout and truncation issues beforehand.
 
-- Claves ausentes en el idioma destino.
-- Claves huérfanas o extra.
-- Placeholders modificados, traducidos o eliminados, como `{user}` -> `{usuario}`.
-- Patrones frecuentes de mojibake, como `MÃ¼ller`.
+## Installation
 
-## Instalación
+Python 3.10 or higher is required.
 
-Se requiere Python 3.10 o superior.
+Clone the repository and install the dependencies:
 
 ```bash
 git clone <repository-url>
@@ -25,69 +27,87 @@ source .venv/bin/activate
 python -m pip install -e ".[test,lint]"
 ```
 
-## Uso
+## Usage
 
-### Validar traducciones
+When installed, the package provides two CLI commands: `loc-validator` and `loc-check`. They are identical aliases.
 
-El primer archivo es la referencia y el segundo es el idioma que se valida:
+### Validating Translations
+
+To validate translations, pass the reference (base) language file first, and the target language file second:
 
 ```bash
 loc-validator check locales/en.json locales/es.json
 ```
+*(Or use `loc-check check locales/en.json locales/es.json`)*
 
-El comando imprime los problemas encontrados y devuelve:
+The command prints details of any identified issues and exits with:
+- `0` if no localization issues are found.
+- `1` if any missing keys, extra keys, placeholder mismatches, or mojibake patterns are detected.
 
-- `0` si no hay diferencias problemáticas.
-- `1` si encuentra claves, placeholders o mojibake inválidos.
-
-También puede ejecutarse sin instalar el entry point:
+You can also run the tool directly as a module without installing the package entry points:
 
 ```bash
 python -m src.cli check locales/en.json locales/de.json
 ```
 
-### Generar pseudo-localización
+### Generating Pseudo-localization
 
-La pseudo-localización añade diacríticos y delimitadores para revelar problemas de espacio o truncamiento, preservando los placeholders:
+Pseudo-localization automatically adds diacritics/accents to text and wraps it in delimiters to help test UI spacing, truncation, or layout issues, while preserving formatting placeholders:
 
 ```bash
 loc-validator pseudoloc locales/en.json --output /tmp/en-pseudo.json
 ```
 
-Si no se indica `--output`, el resultado se imprime en la terminal. Se admiten archivos `.json`, `.yaml` y `.yml`.
-
-## Desarrollo y testing
+If the `--output` option is omitted, the pseudo-localized content is printed directly to stdout:
 
 ```bash
+loc-validator pseudoloc locales/en.json
+```
+
+The command supports nested structures and handles `.json`, `.yaml`, and `.yml` formats automatically.
+
+## Project Structure
+
+- `locales/`: Directory containing sample translation files.
+- `src/parser.py`: Functions to load JSON/YAML files and flatten nested dictionary structures using dot notation (e.g., `section.key`).
+- `src/validators.py`: Logic for validation checks (missing keys, placeholder extraction, and Mojibake detection).
+- `src/pseudoloc.py`: Recursive helper function to pseudo-localize text structures.
+- `src/cli.py`: Click command-line interface definition and CLI output formatting.
+- `tests/`: Automated unit and integration tests.
+
+## Development and Testing
+
+Install development dependencies:
+
+```bash
+python -m pip install -e ".[test,lint]"
+```
+
+Run tests and linter:
+
+```bash
+# Run tests with pytest
 python -m pytest -q
+
+# Run code style and linting checks with Ruff
 ruff check src tests
+
+# Verify compilation
 python -m compileall -q src tests
 ```
 
-La suite incluye pruebas del parser, comparación de claves, placeholders, mojibake, pseudo-localización y códigos de salida del CLI.
+The test suite covers nested structure flattening, key/placeholder comparisons, mojibake detection, pseudo-localization transformations, and CLI exit codes.
 
-## Integración continua
+## Continuous Integration
 
-GitHub Actions ejecuta el linter y la suite de tests en cada `push` y Pull Request mediante [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+GitHub Actions automatically runs the linter and test suite on every `push` and Pull Request using [`.github/workflows/ci.yml`](.github/workflows/ci.yml). It automatically checks for broken .json files inside the `locales/` directory.
 
-## Estructura
+## Technologies Used
 
-```text
-locales/       Archivos JSON de ejemplo
-src/parser.py  Carga y aplanado JSON/YAML
-src/validators.py
-			   Validación de claves, placeholders y codificación
-src/pseudoloc.py
-			   Generación de pseudo-localización
-src/cli.py     Comandos de terminal
-tests/         Pruebas automatizadas
-```
+- **Python 3.10+**
+- **Click**: For a clean command-line user interface.
+- **PyYAML**: For robust YAML/YML parsing and writing.
+- **pytest**: For unit testing and CLI test runners.
+- **Ruff**: For modern, fast Python linting and formatting.
 
-## Tecnologías
 
-- Python 3.10+
-- Click para la interfaz de línea de comandos
-- PyYAML para archivos YAML
-- pytest para testing
-- Ruff para linting
-- GitHub Actions para integración continua
